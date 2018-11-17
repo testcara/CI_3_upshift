@@ -146,7 +146,7 @@ restart_service() {
 	fi
 }
 
-not_install_errata-tool-secrets() {
+not_install_errata_tool_secrets() {
 	cp  playbooks/qe/rolesfile.yml playbooks/qe/rolesfile.yml_backup
 	tac playbooks/qe/rolesfile.yml_backup | sed '1,2 {d}' | tac > playbooks/qe/rolesfile.yml
 }
