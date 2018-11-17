@@ -17,13 +17,13 @@ import re
 
 def generate_bugzilla_conf_file(user, password):
 	user_account = "[bugzilla.redhat.com]\n" + "user=" + user + "\n" + "password=" + password
-	f = open('/etc/bugzillarc', 'w')
+	f = open('~/.bugzillarc', 'w')
 	f.write(user_account)
 	f.close
 
 def empty_bugzilla_conf_file():
 	content = " "
-	f = open('/etc/bugzillarc', 'w')
+	f = open('~/.bugzillarc', 'w')
 	f.write(content)
 	f.close
 
