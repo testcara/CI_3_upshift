@@ -108,7 +108,7 @@ def generate_page_content(formatted_bugs_list):
 	return table_content
 
 def write_page_file(table_content):
-	f = open('content.txt','w')
+	f = open('/home/jenkins/content.txt','w')
 	f.write(table_content)
 	f.close
 
