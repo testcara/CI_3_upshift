@@ -150,3 +150,8 @@ not_install_errata_tool_secrets() {
 	cp  qe/rolesfile.yml qe/rolesfile.yml_backup
 	tac qe/rolesfile.yml_backup | sed '1,2 {d}' | tac > qe/rolesfile.yml
 }
+
+ignore_gather_secrets() {
+	cp qe/deploy-errata-qe.yml  qe/deploy-errata-qe.yml_backup
+	sed -i '8,11 {s/^/#/}' qe/deploy-errata-qe.yml
+}
