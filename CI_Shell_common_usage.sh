@@ -145,3 +145,8 @@ restart_service() {
 		ssh root@et-e2e.usersys.redhat.com "/etc/init.d/qpid_service stop"
 	fi
 }
+
+not_install_errata-tool-secrets() {
+	cp  playbooks/qe/rolesfile.yml playbooks/qe/rolesfile.yml_backup
+	tac playbooks/qe/rolesfile.yml_backup | sed '1,2 {d}' | tac > playbooks/qe/rolesfile.yml
+}
