@@ -4,7 +4,7 @@ import performance_report_comparison
 import os
 import sys
 
-RC_Jenkins = os.environ.get("RC_Jenkins_URL") or "https://errata-jenkins.rhev-ci-vms.eng.rdu2.redhat.com"
+RC_Jenkins = os.environ.get("RC_Jenkins_URL") or "https://jenkins-errata-qe-test.cloud.paas.upshift.redhat.com"
 class TalkToRCJenkinsToParserPerfReport():
 	def __init__(self, username, password, expected_rc_version, tolerance, max_accepted_time, perf_jmeter_slave_server):
 		self.build_name = "Trigger_Perf_Testing_Remotely"
