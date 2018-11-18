@@ -77,15 +77,15 @@ perf_restore_db() {
 	if [[ "${1}" =~ "perf"  ]]
 		then
 		echo "=== [INFO] === Restoring the perf db"
-		ssh  root@errata-stage-perf-db.host.stage.eng.bos.redhat.com "cd /var/lib;./restore_db.sh"
+		ssh -o "StrictHostKeyChecking no" root@errata-stage-perf-db.host.stage.eng.bos.redhat.com "cd /var/lib;./restore_db.sh"
 	fi
 }
 
 initialize_e2e_pub_errata_xmlrpc_settings() {
 	if [[ "$1" =~ "e2e" ]]; then
 		echo "=== Updating the errata_xmlprc settings to the target et against the e2e pub server"
-		ssh root@pub-e2e.usersys.redhat.com 'sed -i "s/et.test.eng.redhat.com/et-e2e.usersys.redhat.com/g" /etc/pub/pubd.conf'
-		ssh root@pub-e2e.usersys.redhat.com '/etc/init.d/pubd restart'
+		ssh -o "StrictHostKeyChecking no" root@pub-e2e.usersys.redhat.com 'sed -i "s/et.test.eng.redhat.com/et-e2e.usersys.redhat.com/g" /etc/pub/pubd.conf'
+		ssh -o "StrictHostKeyChecking no" root@pub-e2e.usersys.redhat.com '/etc/init.d/pubd restart'
 	fi
 }
 
@@ -107,42 +107,42 @@ e2e_env_workaround() {
 update_setting() {
 	if [[ "${1}" =~ "perf" ]]; then
 		echo "=== [INFO] Custom the brew & bugzilla settings of testing server ==="
-		ssh root@errata-stage-perf.host.stage.eng.bos.redhat.com 'cd ~;./check_stub.sh'
+		ssh -o "StrictHostKeyChecking no" root@errata-stage-perf.host.stage.eng.bos.redhat.com 'cd ~;./check_stub.sh'
 	fi
 
 	if [[ "${1}" =~ "e2e" ]]; then
 		echo "=== [INFO] Custom the pub & bugzilla settings of the e2e server ==="
-		ssh root@et-e2e.usersys.redhat.com 'sed -i "s/bz-qgong.usersys.redhat.com/bz-e2e.usersys.redhat.com/" /var/www/errata_rails/config/initializers/credentials/bugzilla.rb'
-		ssh root@et-e2e.usersys.redhat.com 'sed -i "s/pub-et-qe.usersys.redhat.com/pub-e2e.usersys.redhat.com/" /var/www/errata_rails/config/initializers/credentials/pub.rb'
-		ssh root@et-e2e.usersys.redhat.com 'sed -i "s/pdc-et.host.qe.eng.pek2.redhat.com/pdc.engineering.redhat.com/" /var/www/errata_rails/config/initializers/credentials/pub.rb'
+		ssh -o "StrictHostKeyChecking no" root@et-e2e.usersys.redhat.com 'sed -i "s/bz-qgong.usersys.redhat.com/bz-e2e.usersys.redhat.com/" /var/www/errata_rails/config/initializers/credentials/bugzilla.rb'
+		ssh -o "StrictHostKeyChecking no" root@et-e2e.usersys.redhat.com 'sed -i "s/pub-et-qe.usersys.redhat.com/pub-e2e.usersys.redhat.com/" /var/www/errata_rails/config/initializers/credentials/pub.rb'
+		ssh -o "StrictHostKeyChecking no" root@et-e2e.usersys.redhat.com 'sed -i "s/pdc-et.host.qe.eng.pek2.redhat.com/pdc.engineering.redhat.com/" /var/www/errata_rails/config/initializers/credentials/pub.rb'
 		echo "=== [INFO] Custom the brew settings of the e2e server"
-		ssh root@et-e2e.usersys.redhat.com 'sed -i "s/brewweb.engineering.redhat.com/brew-qa.usersys.redhat.com/" /var/www/errata_rails/config/initializers/settings.rb'
-		ssh root@et-e2e.usersys.redhat.com 'sed -i "s/brewhub.engineering.redhat.com/brew-qa.usersys.redhat.com/" /var/www/errata_rails/config/initializers/settings.rb '
+		ssh -o "StrictHostKeyChecking no" root@et-e2e.usersys.redhat.com 'sed -i "s/brewweb.engineering.redhat.com/brew-qa.usersys.redhat.com/" /var/www/errata_rails/config/initializers/settings.rb'
+		ssh -o "StrictHostKeyChecking no" root@et-e2e.usersys.redhat.com 'sed -i "s/brewhub.engineering.redhat.com/brew-qa.usersys.redhat.com/" /var/www/errata_rails/config/initializers/settings.rb '
 	fi
 	# clean the cache for all testing servers
-	ssh root@"${1}" 'rm -rf /var/www/errata_rails/tmp/cache/*'
+	ssh -o "StrictHostKeyChecking no" root@"${1}" 'rm -rf /var/www/errata_rails/tmp/cache/*'
 	# enable qe menu for all testing servers
-	ssh root@"${1}" "sed -i \"s/errata.app.qa.eng.nay.redhat.com/${1}/g\" /var/www/errata_rails/app/controllers/concerns/user_authentication.rb"
+	ssh -o "StrictHostKeyChecking no"root@"${1}" "sed -i \"s/errata.app.qa.eng.nay.redhat.com/${1}/g\" /var/www/errata_rails/app/controllers/concerns/user_authentication.rb"
 }
 
 do_db_migration() {
 	if [[ "${1}" =~ "perf" ]]; then
 		echo "== Doing the db migration on perf env =="
 		db_migrate_command="cd /var/www/errata_rails && source scl_source enable rh-ruby22 && SILENCE_DEPRECATIONS=1 RAILS_ENV=staging bundle exec rake db:migrate"
-		ssh root@errata-stage-perf.host.stage.eng.bos.redhat.com "${db_migrate_command}"
+		ssh -o "StrictHostKeyChecking no" root@errata-stage-perf.host.stage.eng.bos.redhat.com "${db_migrate_command}"
 	fi
 }
 
 restart_service() {
 	echo "=== [INFO] Restarting the services on the testing server =="
-	ssh root@"${1}" '/etc/init.d/httpd24-httpd restart'
-	ssh root@"${1}" '/etc/init.d/delayed_job restart'
-	ssh root@"${1}" '/etc/init.d/messaging_service restart'
-	ssh root@"${1}" '/etc/init.d/qpid_service restart'
+	ssh -o "StrictHostKeyChecking no" root@"${1}" '/etc/init.d/httpd24-httpd restart'
+	ssh -o "StrictHostKeyChecking no" root@"${1}" '/etc/init.d/delayed_job restart'
+	ssh -o "StrictHostKeyChecking no" root@"${1}" '/etc/init.d/messaging_service restart'
+	ssh -o "StrictHostKeyChecking no" root@"${1}" '/etc/init.d/qpid_service restart'
 	# For e2e server, let us stop the qpid service as default
 	if [[ "${1}" =~ "e2e" ]]; then
 		echo "=== [INFO] Stop the qpid service for the e2e server ==="
-		ssh root@et-e2e.usersys.redhat.com "/etc/init.d/qpid_service stop"
+		ssh -o "StrictHostKeyChecking no" root@et-e2e.usersys.redhat.com "/etc/init.d/qpid_service stop"
 	fi
 }
 
