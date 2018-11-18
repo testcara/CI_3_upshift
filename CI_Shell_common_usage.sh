@@ -170,3 +170,8 @@ ignore_to_update_credentials() {
 	mv qe/roles/errata-tool/application-config/tasks/main.yml qe/roles/errata-tool/application-config/tasks/main.yml_backup
 	touch qe/roles/errata-tool/application-config/tasks/main.yml
 }
+
+ignore_to_update_credentials_for_messagebus() {
+	mv qe/roles/errata-tool/messaging-config/tasks/main.yml qe/roles/errata-tool/messaging-config/tasks/main.yml_backup
+	touch qe/roles/errata-tool/messaging-config/tasks/main.yml
+}
