@@ -157,7 +157,7 @@ ignore_gather_secrets() {
 }
 
 ignore_error_for_no_log_true(){
-	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/deploy-errata-qe.yml
+	sed -i "s/no_log: True$/no_log: True\n    ignore_errors: True/g" qe/deploy-errata-qe.yml
 	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/roles/mysql/tasks/main.yml
 	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/roles/errata-tool/lightblue-config/tasks/main.yml
 }
