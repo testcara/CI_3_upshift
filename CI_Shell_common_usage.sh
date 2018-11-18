@@ -155,3 +155,9 @@ ignore_gather_secrets() {
 	cp qe/deploy-errata-qe.yml  qe/deploy-errata-qe.yml_backup
 	sed -i '8,11 {s/^/#/}' qe/deploy-errata-qe.yml
 }
+
+ignore_error_for_no_log_true(){
+	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/deploy-errata-qe.yml
+	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/roles/mysql/tasks/main.yml
+	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/roles/errata-tool/lightblue-config/tasks/main.yml
+}
