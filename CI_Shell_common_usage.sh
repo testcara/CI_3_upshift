@@ -122,7 +122,7 @@ update_setting() {
 	# clean the cache for all testing servers
 	ssh -o "StrictHostKeyChecking no" root@"${1}" 'rm -rf /var/www/errata_rails/tmp/cache/*'
 	# enable qe menu for all testing servers
-	ssh -o "StrictHostKeyChecking no"root@"${1}" "sed -i \"s/errata.app.qa.eng.nay.redhat.com/${1}/g\" /var/www/errata_rails/app/controllers/concerns/user_authentication.rb"
+	ssh -o "StrictHostKeyChecking no" root@"${1}" "sed -i \"s/errata.app.qa.eng.nay.redhat.com/${1}/g\" /var/www/errata_rails/app/controllers/concerns/user_authentication.rb"
 }
 
 do_db_migration() {
