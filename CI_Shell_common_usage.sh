@@ -161,3 +161,12 @@ ignore_error_for_no_log_true(){
 	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/roles/mysql/tasks/main.yml
 	sed -i "s/no_log: True$/no_log: True\n  ignore_errors: True/g" qe/roles/errata-tool/lightblue-config/tasks/main.yml
 }
+
+ignore_to_update_credentials() {
+	# for openshift ansible slave currently cannot git clone secrets from the secrets repo.
+	# for some secrets data are gone.It makes the error happens
+	# I do not think it would bring problems soon. So add the workaround to make the scripts work well.
+	# With it, it will not replace the original config files
+	mv qe/roles/errata-tool/application-config/tasks/main.yml qe/roles/errata-tool/application-config/tasks/main.yml_backup
+	touch qe/roles/errata-tool/application-config/tasks/main.yml
+}
