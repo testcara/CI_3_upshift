@@ -264,8 +264,6 @@ clean_running_and_free_pub_tasks() {
 
 
 
-install_scripts_env
-cd RC_CI-master/auto_testing_CI
 initialize_ansible_related_varables
 current_dir=$( echo `pwd` )
 clean_running_and_free_pub_tasks
