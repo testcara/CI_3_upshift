@@ -2,7 +2,6 @@
 # first, get the product version of pub & pulp
 # second, get the installed pub & pulp version on e2e env
 # finally, do the upgrade/downgrade to make sure the two kinds of version are the same
-set -eo pipefail
 
 confluence_wikiurl="https://docs.engineering.redhat.com"
 e2e_version_page="Version of Applications in E2E"
@@ -84,9 +83,9 @@ check_and_initialize_pub() {
 	    pub_product_sub_version=$( echo ${pub_product_version} | cut -d '-' -f 2 )
 	    pub_product_ansible_version=$( echo ${pub_product_version} | cut -d '-' -f 1 | cut -d '-' -f 1)
 	    if [[ ${pub_product_sub_version} -gt 1 ]]; then
-	    	pub_ansible="ansible-playbook -u root -i ${WORKSPACE}/inventory/pub ${WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version} -e pub_release=${pub_product_sub_version}"
+            pub_ansible="ansible-playbook -u root -i ${CD_Ansible_Workspace}/inventory/pub ${CD_Ansible_Workspace}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version} -e pub_release=${pub_product_sub_version}"
 	    else
-	    	pub_ansible="ansible-playbook -u root -i ${WORKSPACE}/inventory/pub ${WORKSPACE}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version}"
+            pub_ansible="ansible-playbook -u root -i ${CD_Ansible_Workspace}/inventory/pub ${CD_Ansible_Workspace}/playbooks/pub/e2e/deploy-pub-e2e.yml -e pub_version=${pub_product_ansible_version}"
 	    fi
         pub_product_version_integer=$(echo ${pub_product_version} | sed "s/[^0-9]*//g")
         pub_installed_version_integer=$(echo ${pub_installed_version} | sed "s/[^0-9]*//g" | cut -c 1-${#pub_product_version_integer})
@@ -177,7 +176,7 @@ check_and_initialize_pulp_rpm() {
 			pulp_cdn_deploy_ansible="${pulp_cdn_deploy_ansible} -e pulp_downgrade=true"
 		fi
 	fi
-	pulp_rpm_server_ansible="ansible-playbook -u root -i ${WORKSPACE}/inventory/pulp ${WORKSPACE}/playbooks/pulp/deploy-pulp-rpm-e2e.yml \
+	pulp_rpm_server_ansible="ansible-playbook -u root -i ${CD_Ansible_Workspace}/inventory/pulp ${CD_Ansible_Workspace}/playbooks/pulp/deploy-pulp-rpm-e2e.yml \
                          ${pulp_for_rpm_ansible} ${pulp_rpm_ansible} ${pulp_cdn_deploy_ansible}"
     if [[ ${pulp_for_rpm_deploy} == "true" ]] || [[ ${pulp_rpm_deploy} == "true" ]] || [[ ${pulp_cdn_deploy} == "true" ]];then
     	echo "== Ansible: ${pulp_rpm_server_ansible} =="
@@ -239,7 +238,7 @@ check_and_initialize_pulp_docker() {
 		fi
 	fi
 
-	pulp_docker_server_ansible="ansible-playbook -u root -i ${WORKSPACE}/inventory/pulp ${WORKSPACE}/playbooks/pulp/deploy-pulp-docker-e2e.yml \
+	pulp_docker_server_ansible="ansible-playbook -u root -i ${CD_Ansible_Workspace}/inventory/pulp ${CD_Ansible_Workspace}/playbooks/pulp/deploy-pulp-docker-e2e.yml \
     ${pulp_for_docker_ansible} ${pulp_docker_ansible}"
     if [[ ${pulp_docker_deploy} == "true" ]] || [[ ${pulp_for_docker_deploy} == "true" ]];then
     	echo "== Ansible: ${pulp_docker_server_ansible} =="
