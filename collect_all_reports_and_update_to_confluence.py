@@ -5,9 +5,11 @@ import generate_rc_report_content_for_all_testings
 import confluence_client
 import ci3_error
 class CollectAllReportsAndUpdateToConfluence():
-	def __init__(self, username, password, et_rc_version, title, space, parent_page):
+	def __init__(self, username, password, et_rc_version, title, space, parent_page, api_user="", api_token=""):
 		self.username = username
 		self.password = password
+                self.api_user = api_user
+                self.api_token = api_token
 		self.et_rc_version = et_rc_version
 		self.each_rc_report = ""
 		self.file = file
@@ -21,7 +23,7 @@ class CollectAllReportsAndUpdateToConfluence():
 	def generate_report_for_each_test_type(self):
 		for build_name in self.build_name_list:
 			print "==== Generate report for the build: ", build_name 
-			self.each_rc_report = generate_rc_report_content_for_each_testing_type.GenerateRCReportContent(self.username, self.password, build_name, self.et_rc_version)
+			self.each_rc_report = generate_rc_report_content_for_each_testing_type.GenerateRCReportContent(self.username, self.password, build_name, self.et_rc_version, self.api_user, self.api_token)
 			self.each_rc_report.generate_rc_report_for_current_rc_version()
 
 	def collect_report_for_all_testings(self):
@@ -45,16 +47,26 @@ class CollectAllReportsAndUpdateToConfluence():
 if __name__== "__main__":
 	if len(sys.argv) < 7:
 		raise ci3_error.CollectAllReportsAndAddToConfluenceInputError
-	else:
-		username = sys.argv[1]
-		password = sys.argv[2]
-		et_rc_version = sys.argv[3]
-		title = sys.argv[4]
-		space = sys.argv[5]
-		parent_page = sys.argv[6]
-	regenerate_reports= CollectAllReportsAndUpdateToConfluence(username, password, et_rc_version, title, space, parent_page)
-	regenerate_reports.collect_reports_and_update_to_confluence()
-
+	if len(sys.argv) == 7:
+                username = sys.argv[1]
+                password = sys.argv[2]
+                et_rc_version = sys.argv[3]
+                title = sys.argv[4]
+                space = sys.argv[5]
+                parent_page = sys.argv[6]
+                regenerate_reports= CollectAllReportsAndUpdateToConfluence(username, password, et_rc_version, title, space, parent_page)
+                regenerate_reports.collect_reports_and_update_to_confluence()
+        if len(sys.argv) == 9:
+                username = sys.argv[1]
+                password = sys.argv[2]
+                et_rc_version = sys.argv[3]
+                title = sys.argv[4]
+                space = sys.argv[5]
+                parent_page = sys.argv[6]
+                api_user = sys.argv[7]
+                api_token = sys.argv[8]
+                regenerate_reports= CollectAllReportsAndUpdateToConfluence(username, password, et_rc_version, title, space, parent_page, api_user, api_token)
+                regenerate_reports.collect_reports_and_update_to_confluence()
 
 
 
