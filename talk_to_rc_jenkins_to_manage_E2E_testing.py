@@ -61,7 +61,7 @@ class TalkToRCCIForE2E():
 		if self.e2e_testing_result == "SUCCESS":
 			print "=====E2E testing has been PASSED====="
 			self.e2e_testing_result = "PASSED"
-		elif self.e2e_testing_result == "FAILED" and self.console_log_content.find('[CucumberReport] Preparing Cucumber Reports') < 0:
+		elif self.e2e_testing_result == "FAILED(Timeout)" or self.console_log_content.find('[CucumberReport] Preparing Cucumber Reports') < 0:
 			print "====There is someting wrong. please check the log manually"
 			print "====console log URL: " + self.e2e_testing_console_log_url
 			self.e2e_testing_result = "FAILED (unexpected error)"
