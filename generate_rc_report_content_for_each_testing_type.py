@@ -79,7 +79,7 @@ class GenerateRCReportContent():
 		self.test_table_html = "<table><tbody>" + self.head_row_html + self.test_report_row_html + "</tbody></table>"
 
 	def write_page_file(self):
-		content_file = "${CI_3_Workspace}/" +  self.test_type.replace(' ', "") + "_content.txt"
+		content_file = "{}/{}_content.txt".format(CI_3_Workspace, self.test_type.replace(' ', ""))
 		f = open(str(content_file),'w')
 		f.write(self.test_table_html)
 		f.close
