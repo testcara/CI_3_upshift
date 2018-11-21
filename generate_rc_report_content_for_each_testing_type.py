@@ -105,6 +105,5 @@ if __name__== "__main__":
 		password = sys.argv[2]
 		build_name = sys.argv[3]
 		et_rc_version = sys.argv[4]
-		file = sys.argv[5]
 		generate_reprot = GenerateRCReportContent(username, password, build_name, et_rc_version)
 		generate_reprot.generate_rc_report_for_current_rc_version()
