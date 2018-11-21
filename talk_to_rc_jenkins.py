@@ -7,9 +7,14 @@ import sys
 
 RC_Jenkins = os.environ.get("RC_Jenkins_URL") or "https://errata-jenkins.rhev-ci-vms.eng.rdu2.redhat.com"
 class TalkToRCCI():
-	def __init__(self, username, password, build_name):
+	def __init__(self, username, password, build_name, api_user="", api_token=""):
+                Jenkins_user = username
+                Jenkins_user_passwd = password
+                if RC_Jenkins.find('upshift'):
+                    Jenkins_user = api_user
+                    Jenkins_user_passwd = api_token
 		self.build_name = build_name
-		self.server = jenkins.Jenkins(RC_Jenkins, username=username, password=password)
+		self.server = jenkins.Jenkins(RC_Jenkins, username=Jenkins_user, password=Jenkins_user_passwd)
 		self.test_report = []
 		self.last_completed_build_number = 0
 		self.console_log_content = ""
@@ -43,16 +48,19 @@ class TalkToRCCI():
 
 
 if __name__== "__main__":
-	#print len(sys.argv)
-	#print sys.argv
-	username = os.environ.get('ET_RC_User')
-	password = os.environ.get('ET_RC_User_Password')
-	if len(sys.argv) == 2:
-		build_name = sys.argv[1]
+	if len(sys.argv) == 4 :
+                username = sys.argv[1]
+                password = sys.argv[2]
+		build_name = sys.argv[3]
 		talk_to_rc_jenkins = TalkToRCCI(username, password, build_name)
 		talk_to_rc_jenkins.get_test_report_for_build()
 		print talk_to_rc_jenkins.test_report
-
-
-
-
+        if len(sys.argv) == 6 :
+                username = sys.argv[1]
+                password = sys.argv[2]
+                build_name = sys.argv[3]
+                api_user = sys.argv[4]
+                api_token = sys.argv[5]
+		talk_to_rc_jenkins = TalkToRCCI(username, password, build_name, api_user, api_token)
+		talk_to_rc_jenkins.get_test_report_for_build()
+		print talk_to_rc_jenkins.test_report

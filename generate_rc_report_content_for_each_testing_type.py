@@ -6,9 +6,9 @@ import get_all_pub_pulp_product_version_content
 
 class GenerateRCReportContent():
 	#first talk to RC CI and then generate the testing report content
-	def __init__(self, username, password, build_name, expected_rc_version):
+	def __init__(self, username, password, build_name, expected_rc_version, api_user="", api_token=""):
 		self.build_name = build_name
-		self.ci_jenkins = talk_to_rc_jenkins.TalkToRCCI(username, password, build_name)
+		self.ci_jenkins = talk_to_rc_jenkins.TalkToRCCI(username, password, build_name, api_user, api_token)
 		self.ci_jenkins.get_test_report_for_build()
 		self.test_report =self.ci_jenkins.test_report
 		self.current_rc_version = self.ci_jenkins.current_rc_version
@@ -98,12 +98,12 @@ class GenerateRCReportContent():
 			print  "==========The latest job is not for the current rc build testing, will not generate report====="
 
 if __name__== "__main__":
-	#print len(sys.argv)
-	#print sys.argv
-	if len(sys.argv) ==5 :
-		username = sys.argv[1]
-		password = sys.argv[2]
+	if len(sys.argv) ==7 :
+                username = sys.argv[1]
+                password = sys.argv[2]
 		build_name = sys.argv[3]
 		et_rc_version = sys.argv[4]
-		generate_reprot = GenerateRCReportContent(username, password, build_name, et_rc_version)
+		api_user = sys.argv[5]
+		api_token = sys.argv[6]
+		generate_reprot = GenerateRCReportContent(username, password, build_name, et_rc_version, api_user, api_token)
 		generate_reprot.generate_rc_report_for_current_rc_version()
