@@ -2,6 +2,11 @@
 # first, get the product version of pub & pulp
 # second, get the installed pub & pulp version on e2e env
 # finally, do the upgrade/downgrade to make sure the two kinds of version are the same
+# Note:
+# Here we use 3 paths to provide different files
+# ${current_dir} to get the generated pub_pulp_version_content.txt
+# ${CD_Ansible_Workspace} to provide cd team ansible files
+# ${CI_3_Workspace} to provide CI_3 files
 
 confluence_wikiurl="https://docs.engineering.redhat.com"
 e2e_version_page="Version of Applications in E2E"
@@ -66,7 +71,7 @@ check_and_initialize_pub() {
 	pub_installed=$( get_build_installed_on_server ${pub_server} pub-hub )
 	echo "=== pub installed =="
 	echo ${pub_installed}
-	pub_product=$(  python get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pub )
+	pub_product=$(  python ${CI_3_Workspace}/get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pub )
 	echo "== pub production =="
 	echo ${pub_product}
 	if [[ ${pub_installed} =~ ${pub_product} ]]; then
@@ -112,7 +117,7 @@ check_and_initialize_pulp_rpm() {
 	pulp_for_rpm_installed=$( get_build_installed_on_server ${pulp_rpm_server}  pulp-server )
 	echo "== pulp installed on pulp-rpm server =="
 	echo ${pulp_for_rpm_installed}
-	pulp_for_rpm_production=$(  python get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp_for_rpm )
+	pulp_for_rpm_production=$(  python ${CI_3_Workspace}/get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp_for_rpm )
 	echo "== pulp production =="
 	echo ${pulp_for_rpm_production}
 
@@ -135,7 +140,7 @@ check_and_initialize_pulp_rpm() {
 	pulp_rpm_installed=$( get_build_installed_on_server ${pulp_rpm_server} pulp-rpm-plugins)
 	echo "== pulp-rpm installed on pulp-rpm server =="
 	echo ${pulp_rpm_installed}
-	pulp_rpm_production=$(  python get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp-rpm-plugins )
+	pulp_rpm_production=$(  python ${CI_3_Workspace}/get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp-rpm-plugins )
 	echo "== pulp-rpm production =="
 	echo ${pulp_rpm_production}
 
@@ -158,7 +163,7 @@ check_and_initialize_pulp_rpm() {
 	pulp_cdn_distributor_installed=$( get_build_installed_on_server ${pulp_rpm_server} pulp-cdn-distributor-plugins)
 	echo "== pulp-cdn-distributor-plugins installed on pulp-rpm server =="
 	echo ${pulp_cdn_distributor_installed}
-	pulp_cdn_distributor_production=$(  python get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp-cdn-distributor-plugins )
+	pulp_cdn_distributor_production=$(  python ${CI_3_Workspace}/get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp-cdn-distributor-plugins )
 	echo "== pulp-cdn-distributor-plugin production =="
 	echo ${pulp_cdn_distributor_installed}
 	if [[ ${pulp_cdn_distributor_installed} =~ ${pulp_cdn_distributor_production} ]]; then
@@ -196,7 +201,7 @@ check_and_initialize_pulp_docker() {
 	pulp_for_docker_installed=$( get_build_installed_on_server ${pulp_docker_server} ${server_password} pulp-server )
 	echo "== pulp installed on pulp-docker server =="
 	echo ${pulp_for_docker_installed}
-	pulp_for_docker_production=$(  python get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp_for_docker )
+	pulp_for_docker_production=$(  python ${CI_3_Workspace}/get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp_for_docker )
 	echo "== pulp production =="
 	echo ${pulp_for_docker_production}
 	if [[ ${pulp_for_docker_installed} =~ ${pulp_for_docker_production} ]]; then
@@ -220,7 +225,7 @@ check_and_initialize_pulp_docker() {
 	pulp_docker_installed=$( get_build_installed_on_server ${pulp_docker_server} ${server_password} pulp-docker-plugins)
 	echo "== pulp-docker installed on pulp-docker server =="
 	echo ${pulp_docker_installed}
-	pulp_docker_production=$(  python get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp-docker-plugins )
+	pulp_docker_production=$(  python ${CI_3_Workspace}/get_pub_pulp_product_version.py ${current_dir}/pub_pulp_version_content.txt pulp-docker-plugins )
 	echo "== pulp-docker production =="
 	echo ${pulp_docker_production}
 
