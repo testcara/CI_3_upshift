@@ -1,15 +1,17 @@
 import glob
 from shutil import copyfile
-#get the file lists
+
+
+CI_3_Workspace = os.getenv('CI_3_Workspace') or os.getcwd()
 class GenerateAllReports():
 	def __init__(self):
-		self.general_reports_name = "general_report_content.txt"
+		self.general_reports_name = "{}/general_report_content.txt".format(CI_3_Workspace)
 		self.general_reports_content = ""
 		self.report_files_list = []
 		self.head_column = "<tr><th colspan='1'>Test Type</th><th colspan='1'>Test Result</th><th colspan='1'>Test Result Url</th><th colspan='1'>Test Enviroment</th></tr>"
 	
 	def generate_all_reports(self):
-		self.report_files_list = glob.glob("/tmp/*/RC_CI-master/auto_testing_CI/*_content.txt")
+		self.report_files_list = glob.glob("{}/*_content.txt".format(CI_3_Workspace))
 		print "==========Find the following report files:=========="
 		for file in self.report_files_list:
 			print file

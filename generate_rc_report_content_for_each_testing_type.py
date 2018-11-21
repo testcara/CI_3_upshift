@@ -4,6 +4,8 @@ import sys
 import talk_to_rc_jenkins
 import get_all_pub_pulp_product_version_content
 
+CI_3_Workspace = os.getenv('CI_3_Workspace') or os.getcwd()
+
 class GenerateRCReportContent():
 	#first talk to RC CI and then generate the testing report content
 	def __init__(self, username, password, build_name, expected_rc_version, api_user="", api_token=""):
@@ -77,7 +79,7 @@ class GenerateRCReportContent():
 		self.test_table_html = "<table><tbody>" + self.head_row_html + self.test_report_row_html + "</tbody></table>"
 
 	def write_page_file(self):
-		content_file = self.test_type.replace(' ', "") + "_content.txt"
+		content_file = "${CI_3_Workspace}/" +  self.test_type.replace(' ', "") + "_content.txt"
 		f = open(str(content_file),'w')
 		f.write(self.test_table_html)
 		f.close
