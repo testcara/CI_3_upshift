@@ -222,7 +222,7 @@ if __name__== "__main__":
   api_token = ""
   if len(sys.argv) == 6:
       api_user = sys.argv[4]
-      api_token = sys.argv[6]
+      api_token = sys.argv[5]
   talk_to_rc_jenkins = TalkToRCCIForTS2Failure(username, password, build_name, api_user, api_token)
   talk_to_rc_jenkins.run_ts2_hunter()
 
