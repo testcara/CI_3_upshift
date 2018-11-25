@@ -18,7 +18,10 @@ class TalkToRCCIForTS2Failure():
     self.build_name = build_name
     self.api_user = api_user
     self.api_token = api_token
-    self.server = jenkins.Jenkins(RC_Jenkins, self.username, self.password, self.api_user, self.api_token)
+    if RC_Jenkins.find("upshift") >=0 :
+        self.server = jenkins.Jenkins(RC_Jenkins, self.api_user, self.api_token)
+    else:
+        self.server = jenkins.Jenkins(RC_Jenkins, self.username, self.password)
     self.et_build_version = ""
     self.lastest_build_number = 0
     self.TS2_testing_report_url = ""
