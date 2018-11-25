@@ -12,11 +12,13 @@ import talk_to_jenkins_to_send_ts2_hunter_report
 
 RC_Jenkins = os.environ.get("RC_Jenkins_URL") or "https://errata-jenkins.rhev-ci-vms.eng.rdu2.redhat.com"
 class TalkToRCCIForTS2Failure():
-  def __init__(self, username, password, build_name):
+  def __init__(self, username, password, build_name, api_user="", api_token=""):
     self.username = username
     self.password = password
     self.build_name = build_name
-    self.server = jenkins.Jenkins(RC_Jenkins, self.username, self.password)
+    self.api_user = api_user
+    self.api_token = api_token
+    self.server = jenkins.Jenkins(RC_Jenkins, self.username, self.password, self.api_user, self.api_token)
     self.et_build_version = ""
     self.lastest_build_number = 0
     self.TS2_testing_report_url = ""
@@ -213,7 +215,12 @@ if __name__== "__main__":
   username = sys.argv[1]
   password = sys.argv[2]
   build_name = sys.argv[3]
-  talk_to_rc_jenkins = TalkToRCCIForTS2Failure(username, password, build_name)
+  api_user = ""
+  api_token = ""
+  if len(sys.argv) == 6:
+      api_user = sys.argv[4]
+      api_token = sys.argv[6]
+  talk_to_rc_jenkins = TalkToRCCIForTS2Failure(username, password, build_name, api_user, api_token)
   talk_to_rc_jenkins.run_ts2_hunter()
 
 
